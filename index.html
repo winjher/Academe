@@ -37,9 +37,8 @@
   var authToken = null;
   var currentUser = null;
   var settingsCache = null;
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycby5ZOUV2ByLHiSZKj6TJwNGMxUYeGnVmrusNG3jEoRHtAI3NcLRu2fvmpplCnC1gJgekQ/exec';
-  // Surface ANY uncaught JS error on-screen (instead of a silent blank
-  // page) — this is a temporary but permanent-until-removed diagnostic.
+
+  // Surface ANY uncaught JS error on-screen (instead of a silent blank page)
   window.onerror = function (msg, src, line, col, err) {
     var box = document.getElementById('js-error-box');
     if (!box) {
@@ -80,9 +79,6 @@
   }
 
   // ---------- College / Department cascading dropdowns ----------
-  // Used anywhere a College or Department needs to be picked from a list
-  // (Add Subject, Add Faculty, Add Student, Chairman loading) instead of
-  // typed freehand, so the values line up cleanly across the system.
   function loadCollegeSelect_(selId, onChangeFn) {
     call('listColleges', [authToken], function (list) {
       var el = document.getElementById(selId);
@@ -118,8 +114,6 @@
       document.getElementById('login-view').style.display = 'none';
       document.getElementById('app-view').style.display = 'block';
       document.getElementById('who-box').innerHTML = esc(res.name) + '<br><span style="opacity:.7">' + esc(res.role) + '</span>';
-      // Load settings FIRST, then build the nav — the first page rendered
-      // (the dashboard) reads settingsCache, so it must exist by then.
       call('getSettings', [authToken], function (s) {
         settingsCache = s || {};
         document.getElementById('school-name').textContent = settingsCache.SchoolName || 'Academic System';
@@ -440,7 +434,7 @@
     });
   }
 
-  // ============ ADMIN: Grades (view only; encoding is done by Faculty) ============
+  // ============ ADMIN: Grades ============
   function renderGradesAdmin() {
     var c = document.getElementById('content');
     c.innerHTML = '<h1>Grades</h1><div class="card"><h3>Look Up Student Grades</h3><div class="form-grid">' +
@@ -468,7 +462,7 @@
   function renderPayments() {
     var c = document.getElementById('content');
     c.innerHTML = '<h1>Payments</h1>' +
-      '<div class="card"><h3>Record a Payment (manual — online checkout coming later)</h3><div class="form-grid">' +
+      '<div class="card"><h3>Record a Payment</h3><div class="form-grid">' +
       '<input id="pay-student" placeholder="Student ID">' +
       '<input id="pay-amount" placeholder="Amount">' +
       '<input id="pay-method" placeholder="Method (e.g. Cash, GCash)">' +
