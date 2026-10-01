@@ -52,6 +52,27 @@
     return false;
   };
 
+// Global variable containing the deployed web app URL
+      const APP_URL = "<?= appUrl ?>";
+
+      console.log('Current App URL:', APP_URL);
+
+      // Example usage: Making an RPC / API call using fetch
+      async function callServerApi(actionData) {
+        try {
+          const response = await fetch(APP_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify(actionData)
+          });
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error('API Request failed:', error);
+        }
+      }
   // ---------- utilities ----------
   function toast(msg, isError) {
     var t = document.getElementById('toast');
